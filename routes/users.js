@@ -86,6 +86,7 @@ router.get('/:id', function(req,res,next) {
 //个人信息的更新
 router.put('/:id',function(req,res,next) {
 
+	//asdfasd
 })
 
 
