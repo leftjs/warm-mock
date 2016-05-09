@@ -1,0 +1,222 @@
+swagger: "2.0"
+info:
+  title: "warm API"
+  description: "warm API v1"
+  version: 1.0.0
+#  contact:
+#    name: Jason
+#    url: https://github.com/leftjs
+#    email: lefttjs@gmail.com
+#  license:
+#    name: Apache 2.0
+#    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: localhost:3000
+basePath: /
+schemes:
+  - http
+tags:
+  - name: user
+    description: 用户
+produces:
+  - application/json
+consumes:
+  - application/json
+paths:
+  "/users/register/{phone}/code":
+    get:
+      tags:
+        - user
+      summary: 调用云片网下发短信验证码
+      parameters:
+        - name: phone
+          in: path
+          type: string
+          required: true
+          description: 需要下发的手机号码
+          default: "18205253786"
+      responses:
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+        200:
+          description: 短信成功下发后返回结果
+          schema:
+            $ref: "#/definitions/ValidateCodeResult"
+  /users/register:
+    post:
+      tags:
+        - user
+      summary: 提交用户注册信息
+      parameters:
+        - name: body
+          in: body
+          description: 用户注册信息
+          required: true
+          schema:
+            $ref: "#/definitions/UserRegisterForm"
+      responses:
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+        200:
+          description: 用户注册成功后的返回结果
+          schema:
+            $ref: "#/definitions/UserRegisterSuccess"
+  /users/login:
+    post:
+      tags:
+        - user
+      summary: 用户登录
+      parameters:
+        - name: body
+          in: body
+          description: 登录信息
+          required: true
+          schema:
+            $ref: "#/definitions/UserLoginForm"
+      responses:
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+        200:
+          description: 用户登录成功后的返回结果
+          schema:
+            $ref: "#/definitions/UserLoginSuccess"
+  '/users/{id}':
+    get:
+      tags:
+        - user
+      summary: 获取用户信息
+      parameters:
+        - name: id
+          type: integer
+          format: int64
+          in: path
+          required: true
+          description: 用户
+      responses:
+        default:
+          description: error
+          schema:
+           $ref: "#/definitions/Error"
+        200:
+          description: 用户信息
+          schema:
+            $ref: '#/definitions/UserInfo'
+
+definitions:
+  Error:
+    title: Error
+    description: Error
+    type: object
+    properties:
+      msg:
+        type: string
+  ValidateCodeResult:
+    title: ValidateCodeResult
+    type: object
+    properties:
+      code:
+        type: string
+        description: 短信验证码
+        default: "100332"
+      phone:
+        type: string
+        description: 手机号码
+        default: "18205253786"
+  UserRegisterForm:
+    title: UserRegisterForm
+    type: object
+    description: 用户注册信息
+    properties:
+      nickname:
+        type: string
+        description: 昵称
+        default: Jason
+      password:
+        type: string
+        format: password
+        default: jason
+        description: 密码
+      phone:
+        type: string
+        description: 电话号码
+        default: '18205253786'
+      sex:
+        type: string
+        description: 性别
+        enum:
+          - '男'
+          - '女'
+        default: '男'
+  UserRegisterSuccess:
+    title: UserRegisterSuccess
+    type: object
+    description: 用户信息
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: 用户id
+      nickname:
+        type: string
+        description: 昵称
+        default: Jason
+      phone:
+        type: string
+        description: 电话号码
+        default: '18205253786'
+  UserLoginForm:
+    title: UserLoginForm
+    type: object
+    description: 用户登录信息
+    properties:
+      phone:
+        type: string
+        description: 电话号码
+        default: '18205253786'
+      password:
+        type: string
+        format: password
+        default: jason
+        description: 密码
+  UserLoginSuccess:
+    title: UserLoginSuccess
+    type: object
+    description: 登录成功结果
+    properties:
+      userId:
+        type: integer
+        format: int64
+        description: 用户id
+      token:
+        type: string
+        description: token
+      expiredTime:
+        type: integer
+        format: int64
+        description: 过期时间,默认7天
+  UserInfo:
+    title: UserInfo
+    type: object
+    description: 用户信息
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: 用户id
+      phone:
+        type: string
+        description: 手机号码
+      nickname:
+        type: string
+        description: 昵称
+      sex:
+        type: string
+        description: 性别
+      company:
+        type: string
+        description: 公司信息
