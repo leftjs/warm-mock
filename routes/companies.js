@@ -15,7 +15,7 @@ router.get('/search/:email', function(req,res,next) {
 	var suffix = /^(\w+)(\.\w+)*@(\w+(\.\w{2,3}){1,3})$/.exec(email)[3]
 	var data = Mock.mock({
 		suffix: suffix,
-		'results|'
+		'result': 1
 	})
 })
 
