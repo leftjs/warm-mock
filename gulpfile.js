@@ -31,7 +31,7 @@ gulp.task('nodemon', function () {
 });
 
 gulp.task('yaml', function () {
-  gulp.src('./docs/api.yaml')
+  return gulp.src('./docs/api.yaml')
     .pipe(yaml({
 	    space: 2,
 	    safe: true
@@ -39,6 +39,10 @@ gulp.task('yaml', function () {
     .pipe(gulp.dest('./public'));
 });
 
-gulp.watch(['./docs/api.yaml'], ['yaml']);
+gulp.task('watch', function() {
+	gulp.watch(['./docs/api.yaml'], ['yaml']);
+})
 
-gulp.task('default', ['nodemon', 'yaml']);
+
+
+gulp.task('default', ['nodemon', 'yaml', 'watch']);
