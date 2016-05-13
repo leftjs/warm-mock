@@ -129,6 +129,15 @@
             "required": true,
             "in": "path",
             "description": "瞬间的id"
+          },
+          {
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/ShowtimeUpdateRequestBody"
+            },
+            "required": true,
+            "in": "body",
+            "description": "瞬间实体"
           }
         ],
         "responses": {
@@ -3139,6 +3148,25 @@
     }
   },
   "definitions": {
+    "ImageUploadDataUnit": {
+      "title": "ImageUploadDataUnit",
+      "description": "图片base64单元",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "图片id"
+        },
+        "name": {
+          "type": "string",
+          "description": "图片名称"
+        },
+        "imageData": {
+          "type": "string",
+          "description": "图片base64数据"
+        }
+      }
+    },
     "ShowtimePublishRequestBody": {
       "title": "ShowtimePublishRequestBody",
       "description": "发布瞬间请求体",
@@ -3152,7 +3180,7 @@
           "description": "图片base64数组",
           "type": "array",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/ImageUploadDataUnit"
           }
         },
         "activityId": {
@@ -3173,6 +3201,24 @@
         "id": {
           "type": "string",
           "description": "瞬间的id"
+        }
+      }
+    },
+    "ShowtimeUpdateRequestBody": {
+      "title": "ShowtimeUpdateRequestBody",
+      "description": "更新瞬间的请求体",
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "瞬间内容"
+        },
+        "imagesData": {
+          "description": "图片base64数组",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -3211,6 +3257,11 @@
         "createdAt": {
           "type": "string",
           "description": "创建时间",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "更新时间",
           "format": "date-time"
         }
       }

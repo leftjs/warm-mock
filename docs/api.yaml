@@ -118,6 +118,12 @@ paths:
           required: true
           in: path
           description: 瞬间的id
+        - name: body
+          schema:
+            $ref: "#/definitions/ShowtimeUpdateRequestBody"
+          required: true
+          in: body
+          description: 瞬间实体
       responses:
         default:
           description: error
@@ -169,6 +175,22 @@ paths:
           description: 投票详情
           schema:
             $ref: "#/definitions/Vote"
+#    put:
+#      tags:
+#        - trend
+#      summary: 更新单个投票
+#      operationId: updateSingleVote
+#      parameters:
+#        - name: voteId
+#          type: string
+#          in: path
+#          description: 投票id
+#          required: true
+#        - name: body
+#
+#      responses:
+#        default:
+
 
 #  /trend/topic/publish
 #  /trend/activity/publish
@@ -2659,6 +2681,23 @@ paths:
             items:
               $ref: "#/definitions/CompanyBrief"
 definitions:
+
+
+  ImageUploadDataUnit:
+    title: ImageUploadDataUnit
+    description: 图片base64单元
+    type: object
+    properties:
+      id:
+        type: string
+        description: 图片id
+      name:
+        type: string
+        description: 图片名称
+      imageData:
+        type: string
+        description: 图片base64数据
+
   # showtime
   ShowtimePublishRequestBody:
     title: ShowtimePublishRequestBody
@@ -2672,7 +2711,7 @@ definitions:
         description: 图片base64数组
         type: array
         items:
-          type: string
+          $ref: "#/definitions/ImageUploadDataUnit"
       activityId:
         type: string
         description: 属于的活动,为空则为非活动瞬间
@@ -2687,6 +2726,19 @@ definitions:
       id:
         type: string
         description: 瞬间的id
+  ShowtimeUpdateRequestBody:
+    title: ShowtimeUpdateRequestBody
+    description: 更新瞬间的请求体
+    type: object
+    properties:
+      content:
+        type: string
+        description: 瞬间内容
+      imagesData:
+        description: 图片base64数组
+        type: array
+        items:
+          type: string
   Showtime:
     title: Showtime
     description: 瞬间详情
@@ -2715,6 +2767,10 @@ definitions:
       createdAt:
         type: string
         description: 创建时间
+        format: date-time
+      updatedAt:
+        type: string
+        description: 更新时间
         format: date-time
   # vote
   VotePublishRequestBody:
