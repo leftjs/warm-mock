@@ -37,7 +37,8 @@
         url = decodeURIComponent(url[1]);
       } else {
 //        url = "http://petstore.swagger.io/v2/swagger.json";
-	      url = 'http://localhost:3000/api.json'
+
+	      url = 'http://' + window.location.href.match(/\/\/((\w+\.?)+:?(\d+)?)/)[1] + '/api.json'
       }
 
       hljs.configure({
