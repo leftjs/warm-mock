@@ -2681,8 +2681,6 @@ paths:
             items:
               $ref: "#/definitions/CompanyBrief"
 definitions:
-
-
   ImageUploadDataUnit:
     title: ImageUploadDataUnit
     description: 图片base64单元
@@ -2697,7 +2695,60 @@ definitions:
       imageData:
         type: string
         description: 图片base64数据
+  ApproveArrUnit:
+    title: ApproveArrUnit
+    description: 点赞数组单元
+    type: object
+    properties:
+      userId:
+        type: string
+        description: 图片
+      username:
+        type: string
+        description: 用户名
+  ApproveArr:
+    title: ApproveArr
+    description: 点赞数组
+    type: object
+    properties:
+      count:
+        type: integer
+        format: integer
+        description: 点赞数
+      items:
+        type: array
+        description: 点赞数组
+        items:
+          $ref: "#/definitions/ApproveArrUnit"
 
+  CommentArr:
+    title: CommentArr
+    description: 评论数组
+    type: object
+    properties:
+      count:
+        type: integer
+        format: integer
+        description: 评论数
+      items:
+        type: array
+        description: 评论数组
+        items:
+          $ref: "#/definitions/CommentArrUnit"
+  CommentArrUnit:
+    title: CommentArrUnit
+    description: 评论数组单元
+    type: object
+    properties:
+      userId:
+        type: string
+        description: 用户id
+      username:
+        type: string
+        description: 用户名
+      comment:
+        type: string
+        description: 评论
   # showtime
   ShowtimePublishRequestBody:
     title: ShowtimePublishRequestBody
@@ -2764,6 +2815,14 @@ definitions:
       author:
         type: string
         description: 发布者
+      approveArr:
+        type: array
+        items:
+          $ref: "#/definitions/ApproveArr"
+      commentArr:
+        type: array
+        items:
+          $ref: "#/definitions/CommentArr"
       createdAt:
         type: string
         description: 创建时间
