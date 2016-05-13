@@ -12,46 +12,6 @@
   ],
   "tags": [
     {
-      "name": "user",
-      "description": "用户"
-    },
-    {
-      "name": "group",
-      "description": "群组"
-    },
-    {
-      "name": "companies",
-      "description": "公司"
-    },
-    {
-      "name": "circles",
-      "description": "同事圈"
-    },
-    {
-      "name": "favoriteRank",
-      "description": "排行榜"
-    },
-    {
-      "name": "gifts",
-      "description": "礼物"
-    },
-    {
-      "name": "interaction",
-      "description": "互动"
-    },
-    {
-      "name": "notifications",
-      "description": "通知"
-    },
-    {
-      "name": "search",
-      "description": "查找"
-    },
-    {
-      "name": "report",
-      "description": "举报"
-    },
-    {
       "name": "trend",
       "description": "动态"
     }
@@ -209,6 +169,38 @@
             "description": "发布投票成功后的响应体",
             "schema": {
               "$ref": "#/definitions/VotePublishResponseBody"
+            }
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/trend/vote/{voteId}": {
+      "get": {
+        "tags": [
+          "trend"
+        ],
+        "summary": "获取单个投票",
+        "operationId": "getSingleVote",
+        "parameters": [
+          {
+            "name": "voteId",
+            "type": "string",
+            "in": "path",
+            "description": "投票id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "投票详情",
+            "schema": {
+              "$ref": "#/definitions/Vote"
             }
           },
           "default": {
@@ -3256,6 +3248,167 @@
         }
       }
     },
+    "Vote": {
+      "title": "Vote",
+      "description": "投票详情",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "投票id"
+        },
+        "title": {
+          "type": "string",
+          "description": "投票标题"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VoteUnit"
+          },
+          "description": "选项数组"
+        }
+      }
+    },
+    "VoteUnit": {
+      "title": "VoteUnit",
+      "description": "投票选项unit",
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "投票内容"
+        },
+        "voters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/User"
+          },
+          "description": "投票人"
+        }
+      }
+    },
+    "User": {
+      "title": "User",
+      "type": "object",
+      "required": [
+        "id",
+        "nickname",
+        "photo"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "用户id"
+        },
+        "email": {
+          "type": "string",
+          "formData": "email",
+          "description": "用户邮箱"
+        },
+        "nickname": {
+          "type": "string",
+          "description": "昵称"
+        },
+        "photo": {
+          "type": "string",
+          "description": "头像url"
+        },
+        "realname": {
+          "type": "string",
+          "description": "真实姓名"
+        },
+        "department": {
+          "type": "object",
+          "description": "部门",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "部门id"
+            },
+            "name": {
+              "type": "string",
+              "description": "部门名"
+            }
+          }
+        },
+        "sex": {
+          "type": "string",
+          "enum": [
+            "男",
+            "女"
+          ],
+          "description": "性别"
+        },
+        "birthday": {
+          "type": "string",
+          "format": "date",
+          "description": "生日"
+        },
+        "bloodType": {
+          "type": "string",
+          "description": "血型"
+        },
+        "introduce": {
+          "type": "string",
+          "description": "简介"
+        },
+        "registerDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "注册时间"
+        },
+        "phone": {
+          "type": "string",
+          "description": "电话号码"
+        },
+        "qq": {
+          "type": "string",
+          "description": "QQ"
+        },
+        "company": {
+          "type": "object",
+          "description": "公司",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "公司id"
+            },
+            "name": {
+              "type": "string",
+              "description": "公司名"
+            },
+            "briefName": {
+              "type": "string",
+              "description": "公司简称"
+            }
+          }
+        },
+        "score": {
+          "type": "number",
+          "description": "积分"
+        },
+        "tids": {
+          "type": "array",
+          "description": "小队id数组",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lastCommentTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "上次发表评论的时间"
+        },
+        "tags": {
+          "type": "array",
+          "description": "个人标签",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "Error": {
       "title": "Error",
       "description": "Error",
@@ -3341,127 +3494,6 @@
         },
         "content": {
           "type": "string"
-        }
-      }
-    },
-    "User": {
-      "title": "User",
-      "type": "object",
-      "required": [
-        "_id",
-        "nickname",
-        "photo"
-      ],
-      "properties": {
-        "_id": {
-          "type": "string",
-          "description": "用户id"
-        },
-        "email": {
-          "type": "string",
-          "formData": "email",
-          "description": "用户邮箱"
-        },
-        "nickname": {
-          "type": "string",
-          "description": "昵称"
-        },
-        "photo": {
-          "type": "string",
-          "description": "头像url"
-        },
-        "realname": {
-          "type": "string",
-          "description": "真实姓名"
-        },
-        "department": {
-          "type": "object",
-          "description": "部门",
-          "properties": {
-            "_id": {
-              "type": "string",
-              "description": "部门id"
-            },
-            "name": {
-              "type": "string",
-              "description": "部门名"
-            }
-          }
-        },
-        "sex": {
-          "type": "string",
-          "enum": [
-            "男",
-            "女"
-          ],
-          "description": "性别"
-        },
-        "birthday": {
-          "type": "string",
-          "format": "date-time",
-          "description": "生日"
-        },
-        "bloodType": {
-          "type": "string",
-          "description": "血型"
-        },
-        "introduce": {
-          "type": "string",
-          "description": "简介"
-        },
-        "registerDate": {
-          "type": "string",
-          "format": "date-time",
-          "description": "注册时间"
-        },
-        "phone": {
-          "type": "string",
-          "description": "电话号码"
-        },
-        "qq": {
-          "type": "string",
-          "description": "QQ"
-        },
-        "company": {
-          "type": "object",
-          "description": "公司",
-          "properties": {
-            "_id": {
-              "type": "string",
-              "description": "公司id"
-            },
-            "name": {
-              "type": "string",
-              "description": "公司名"
-            },
-            "briefName": {
-              "type": "string",
-              "description": "公司简称"
-            }
-          }
-        },
-        "score": {
-          "type": "number",
-          "description": "积分"
-        },
-        "tids": {
-          "type": "array",
-          "description": "小队id数组",
-          "items": {
-            "type": "string"
-          }
-        },
-        "lastCommentTime": {
-          "type": "string",
-          "format": "date-time",
-          "description": "上次发表评论的时间"
-        },
-        "tags": {
-          "type": "array",
-          "description": "个人标签",
-          "items": {
-            "type": "string"
-          }
         }
       }
     },
