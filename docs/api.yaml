@@ -17,6 +17,10 @@ schemes:
 tags:
   - name: trend
     description: 动态
+  - name: company
+    description: 公司
+  - name: team
+    description: 群组
 produces:
   - application/json
 consumes:
@@ -569,11 +573,198 @@ paths:
           schema:
             $ref: "#/definitions/Activity"
 
-
-
-
-
-
+# company
+  /company/register/quick:
+    post:
+      tags:
+        - company
+      summary: "快递注册公司"
+      description: 用户注册后确认用户所在公司时的公司快速注册接口
+      operationId: quickRegisterCompany
+      parameters:
+        - name: body
+          in: body
+          description: 快速注册公司的请求体
+          required: true
+          schema:
+            title: quickRegisterCompanyRequestBody
+            properties:
+              name:
+                type: string
+                description: 公司全称
+              email:
+                type: string
+                description: 公司的企业邮箱
+      responses:
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+        201:
+          description: 公司
+          schema:
+            $ref: "#/definitions/Company"
+  "/company/info/complete":
+    post:
+      tags:
+        - company
+      summary: "完善公司注册信息"
+      operationId: "completeCompanyInfo"
+      description: 完善当前用户所注册的公司的信息
+      parameters:
+        - name: body
+          in: body
+          description: 公司信息完善的请求体
+          requried: true
+          schema:
+            title: completeCompanyInfoRequesetBody
+            properties:
+              name:
+                type: string
+                description: 公司全称
+              address:
+                type: string
+                description: 公司地址
+              number:
+                type: string
+                description: 公司电话
+              size:
+                type: string
+                description: 公司规模
+              contactName:
+                type: string
+                description: 联系人姓名
+              contactNumber:
+                type: string
+                description: 联系人电话
+              contactEmail:
+                type: string
+                description: 联系人邮箱
+              contactJob:
+                type: string
+                description: 联系人职务
+      responses:
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+        200:
+          description: 公司详情
+          schema:
+            $ref: "#/definitions/Company"
+  /company/user/apply:
+    get:
+      tags:
+        - company
+      summary: 公司号的申请
+      operationId: applyForCompanyUser
+      description: 申请当前登录用户所在公司的公司号
+      responses:
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+        200:
+          description: 申请已提交
+  /company/qrcode/url:
+    get:
+      tags:
+        - company
+      summary: 获取公司二维码
+      operationId: getCompanyQRcodeUrl
+      description: 获取以供分享的公司url信息,需要客户端调用相关功能进行公司QRcode生成
+      responses:
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+        200:
+          description: 公司的url信息,用来生成QRcode
+          schema:
+            $ref: "#/definitions/QRCodeUrl"
+  /company/find/qrcode:
+    post:
+      tags:
+        - company
+      summary: 获取二维码中的公司信息
+      operationId: getCompanyInfoByQRcode
+      description: 根据二维码中传入的url信息,获得对应公司的信息
+      parameters:
+        - name: body
+          in: body
+          description: url
+          schema:
+            $ref: "#/definitions/QRCodeUrl"
+      responses:
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+        200:
+          description: 简单公司model
+          schema:
+            $ref: "#/definitions/SimpleCompanyModel"
+  /company/serach:
+    get:
+      tags:
+        - company
+      summary: 根据条件搜索相关公司
+      operationId: searchCompanyByConditons
+      description: 根据传入的条件搜索相关公司
+      parameters:
+        - name: nameCondition
+          in: query
+          description: 公司全称的条件,返回包含条件字符串的公司
+          type: string
+        - name: emailCondition
+          in: query
+          description: 个人企业邮箱或者邮箱后缀条件,返回相应公司
+          type: string
+      responses:
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+        200:
+          description: 公司列表
+          schema:
+            type: array
+            description: 搜索结果集列表
+            title: CompanyResultList
+            items:
+              $ref: "#/definitions/SimpleCompanyModel"
+#  群组
+  /team:
+    post:
+      tags:
+        - team
+      summary: 创建一个群组
+      operationId: establishTeam
+      parameters:
+        - name: body
+          in: body
+          description: 创建群组的请求体
+          schema:
+            title: establishTeamRequestBody
+            properties:
+              image:
+                description: 封面图片
+                $ref: "#/definitions/ImageUploadDataUnit"
+              icon:
+                description: 群组图标
+                $ref: "#/definitions/ImageUploadDataUnit"
+              name:
+                description: 群组名称
+                type: string
+      responses:
+        default:
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+        200:
+          description:  群组详情
+          schema:
+            $ref: "#/definitions/Team"
 
 
 definitions:
@@ -986,7 +1177,6 @@ definitions:
         description: 个人标签
         items:
           type: string
-
   SimpleUserModel:
     title: SimpleUserModel
     description: 简单用户模型
@@ -1000,6 +1190,113 @@ definitions:
       avatar:
         $ref: "#/definitions/ImageUrlUnit"
         description: 头像
+#  company
+  Company:
+    title: Company
+    properties:
+      id:
+        description: 公司id
+        type: string
+      username:
+        description: 企业账号登录用的用户名
+        type: string
+      domains:
+        description: 邮箱后缀
+        type: array
+        items:
+          type: string
+      name:
+        description: 公司名称
+        type: string
+      shortName:
+        description: 公司简称
+        type: string
+      logo:
+        description: 公司logo url
+        $ref: "#/definitions/ImageUrlUnit"
+      number:
+        description: 公司电话
+        type: string
+      province:
+        description: 省份
+        type: string
+      city:
+        description: 城市
+        type: string
+      district:
+        description: 区
+        type: string
+      address:
+        description: 详细地址
+        type: string
+      contactName:
+        description: 联系人姓名
+        type: string
+      contactNumber:
+        description: 联系人电话
+        type: string
+      contactEmail:
+        description: 联系人邮箱
+        type: string
+      contactJob:
+        description: 联系人职务
+        type: string
+      memberNumber:
+        description: 公司成员数量
+        type: integer
+        format: int64
+      size:
+        description: 公司规模
+        type: string
+  SimpleCompanyModel:
+    title: SimpleCompanyModel
+    description: 简单公司模型
+    properties:
+      id:
+        type: string
+        description: 公司id
+      name:
+        type: string
+        description: 公司名称
+      logo:
+        description: 公司logo url
+        $ref: "#/definitions/ImageUrlUnit"
+
+  QRCodeUrl:
+    description: 二维码中编码的url信息
+    type: object
+    title: QRCodeUrl
+    properties:
+      url:
+        type: string
+        description: 公司的url信息,用户被邀请的用户快速查找到公司
+
+#  群组
+  Team:
+    title: Team
+    description: 群组详情
+    type: object
+    properties:
+      id:
+        type: string
+        description: 群组id
+      name:
+        type: string
+        description: 群组名称
+      image:
+        description: 封面图片
+        $ref: "#/definitions/ImageUrlUnit"
+      members:
+        type: array
+        description: 成员
+        items:
+          $ref: "#/definitions/SimpleUserModel"
+      bulletin:
+        type: string
+        description: 公告
+      icon:
+        description: 群组icon
+        $ref: "#/definitions/ImageUrlUnit"
   Error:
     title: Error
     description: Error
