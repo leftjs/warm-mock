@@ -1095,6 +1095,74 @@
           }
         }
       }
+    },
+    "/team/{teamId}/add/member/{userId}": {
+      "get": {
+        "tags": [
+          "team"
+        ],
+        "summary": "群组添加成员",
+        "operationId": "addNewMember",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "descripiton": "群组id",
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "添加成功"
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/team/{teamId}/delete/member/{userId}": {
+      "get": {
+        "tags": [
+          "team"
+        ],
+        "summary": "群组删除成员",
+        "operationId": "addNewMember",
+        "parameters": [
+          {
+            "name": "teamId",
+            "in": "path",
+            "descripiton": "群组id",
+            "type": "string"
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "用户id",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "删除成功"
+          },
+          "default": {
+            "description": "error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
