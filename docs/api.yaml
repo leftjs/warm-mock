@@ -54,7 +54,9 @@ paths:
                 type: string
                 description: 属于的活动,为空则为非活动瞬间
               obviousTeams:
-                $ref: "#/definitions/ObviousTeams"
+                type: array
+                items:
+                  $ref: "#/definitions/ObviousTeam"
                 description: 指定可见群组id,为空默认为全体可见
           in: body
           required: true
@@ -136,7 +138,9 @@ paths:
                 type: string
                 description: 属于的活动,为空则为非活动瞬间
               obviousTeams:
-                $ref: "#/definitions/ObviousTeams"
+                type: array
+                items:
+                  $ref: "#/definitions/ObviousTeam"
                 description: 指定可见群组id,为空默认为全体可见
           required: true
           in: body
@@ -173,7 +177,9 @@ paths:
                 $ref: "#/definitions/ImageUploadDataUnit"
                 description: 配图的base64数据
               obviousTeams:
-                $ref: "#/definitions/ObviousTeams"
+                type: array
+                items:
+                  $ref: "#/definitions/ObviousTeam"
                 description: 指定可见群组id,为空默认为全体可见
               options:
                 type: array
@@ -256,7 +262,9 @@ paths:
                 $ref: "#/definitions/ImageUploadDataUnit"
                 description: 配图的base64数据
               obviousTeams:
-                $ref: "#/definitions/ObviousTeams"
+                type: array
+                items:
+                  $ref: "#/definitions/ObviousTeam"
                 description: 指定可见群组id,为空默认为全体可见
               options:
                 type: array
@@ -301,7 +309,9 @@ paths:
                 description: 配图的base64数据
                 $ref: "#/definitions/ImageUploadDataUnit"
               obviousTeams:
-                $ref: "#/definitions/ObviousTeams"
+                type: array
+                items:
+                  $ref: "#/definitions/ObviousTeam"
                 description: 指定可见群组id,为空默认为全体可见
           in: body
           required: true
@@ -383,7 +393,9 @@ paths:
                 description: 配图的base64数据
                 $ref: "#/definitions/ImageUploadDataUnit"
               obviousTeams:
-                $ref: "#/definitions/ObviousTeams"
+                type: array
+                items:
+                  $ref: "#/definitions/ObviousTeam"
                 description: 指定可见群组id,为空默认为全体可见
           description: 更新请求体
       responses:
@@ -431,7 +443,9 @@ paths:
                 $ref: "#/definitions/Location"
                 description: 活动地点
               obviousTeams:
-                $ref: "#/definitions/ObviousTeams"
+                type: array
+                items:
+                  $ref: "#/definitions/ObviousTeam"
                 description: 指定可见群组id,为空默认为全体可见
               startTime:
                 type: string
@@ -537,7 +551,9 @@ paths:
                 $ref: "#/definitions/Location"
                 description: 活动地点
               obviousTeams:
-                $ref: "#/definitions/ObviousTeams"
+                type: array
+                items:
+                  $ref: "#/definitions/ObviousTeam"
                 description: 指定可见群组id,为空默认为全体可见
               startTime:
                 type: string
@@ -905,9 +921,9 @@ definitions:
               type: string
               description: 更新时间
               format: date-time
-  ObviousTeams:
-    title: ObviousTeams
-    description: 可见群组列表
+  ObviousTeam:
+    title: ObviousTeam
+    description: 单个可见群组
     type: object
     properties:
       id:
@@ -939,8 +955,10 @@ definitions:
       activityId:
         type: string
         description: 属于的活动,为空则为非活动瞬间
-      ObviousTeams:
-        $ref: "#/definitions/ObviousTeams"
+      obviousTeams:
+        type: array
+        items:
+          $ref: "#/definitions/ObviousTeam"
         description: 指定可见群组id,为空默认为全体可见
       author:
         $ref: "#/definitions/SimpleUserModel"
@@ -985,7 +1003,9 @@ definitions:
         $ref: "#/definitions/SimpleUserModel"
         description: 发起人
       obviousTeams:
-        $ref: "#/definitions/ObviousTeams"
+        type: array
+        items:
+          $ref: "#/definitions/ObviousTeam"
         description: 指定可见群组id,为空默认为全体可见
       createdAt:
         type: string
@@ -1036,7 +1056,9 @@ definitions:
         description: 话题配图
         $ref: "#/definitions/ImageUrlUnit"
       obviousTeams:
-        $ref: "#/definitions/ObviousTeams"
+        type: array
+        items:
+          $ref: "#/definitions/ObviousTeam"
         description: 指定可见群组id,为空默认为全体可见
       commentArr:
         $ref: "#/definitions/CommentArr"
@@ -1068,7 +1090,9 @@ definitions:
         $ref: "#/definitions/Location"
         description: 活动地点
       obviousTeams:
-        $ref: "#/definitions/ObviousTeams"
+        type: array
+        items:
+          $ref: "#/definitions/ObviousTeam"
         description: 指定可见群组id,为空默认为全体可见
       author:
         $ref: "#/definitions/SimpleUserModel"
